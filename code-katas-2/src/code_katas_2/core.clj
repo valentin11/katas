@@ -13,11 +13,20 @@
   "Dado un numero cualquiera de secuencias, cada una ya ordenada de menor a mayor, encontrar el numero
    mas chico que aparezca en todas las secuencias, las secuencias pueden ser infinitas."
   [& seqs]
-  (if (= (count seqs) 1)
-    (first (first seqs));Devuelve el primer elemento.
-    (first(clojure.set/intersection (map (fn [v](lazy-seq (set v))) seqs)));Pasarle los elementos dentro de una lista, NO la lista!
-  )
-  ;(map (fn [v](set v)) seqs);Paso los vectores a set.
+  (def function (fn [v e] (not-every? false?(map #(= % e) v))));Devuelve true si el vector "v" contiene el elemento "e", sino devuelve false. 
+  (defn intersection [e];Devuelve true si el elemento pertenece a todos los vectores los cuales estan adentro de seqs.
+     (loop [number e vect seqs l []]
+       (if (empty? vect)
+         (not-any? false? l)
+         (recur number (rest vect) (conj l (function (first vect) number))))))
+  
+   (if (= (count seqs) 1)
+     (first (first seqs));Devuelve el primer elemento.
+     (first (filter intersection (first seqs)))
+   )
+   
+   ;(map (fn [v](set v)) seqs);Paso los vectores a set.
+  ;(first(lazy-seq (clojure.set/intersection (map (fn [v](lazy-seq (set v))) seqs))));Pasarle los elementos dentro de una lista, NO la lista!
 )
 
 
@@ -26,13 +35,16 @@
    retorne una nueva coleccion donde el valor es insertado intercalado cada dos argumentos
    que cumplan el predicado"
   [predicado valor secuencia]
-  (loop [p predicado v valor s secuencia l []]
-    (if (or (= (count s) 0) (= (count s) 1));Asumo que para poner un valor necesito almenos dos elementos en la secuencia. 
-       (conj l (first s))
-       (recur p v (rest s) (if (p (first s) (second s))
-                             (conj (conj l (first s)) valor)
-                             (conj l (first s))
-                            ));Lo pongo acá, porque fue la unica forma que pude hacer que vaya variando el vector l.
+  (if (empty? secuencia) 
+    secuencia
+    (loop [p predicado v valor s secuencia l []]
+      (if  (= (count s) 1);Caso base.
+         (conj l (first s))
+         (recur p v (rest s) (if (p (first s) (second s))
+                         (conj (conj l (first s)) valor)
+                         (conj l (first s)))
+                        );Lo pongo acá, porque fue la unica forma que pude hacer que vaya variando el vector l.
+       )
      )
    )
 )
