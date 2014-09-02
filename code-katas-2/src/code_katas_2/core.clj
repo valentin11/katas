@@ -58,12 +58,15 @@
    La funcion debe aceptar una secuencia inicial de numeros, y devolver una secuencia infinita de compresiones, donde
    cada nuevo elemento es el elemento anterior comprimido."
   [secuencia]
-  (loop [sec secuencia out-sequence []]
-    (if (empty? out-sequence)
-      (recur secuencia (conj out-sequence (compress secuencia)))
-      (recur secuencia (conj out-sequence (compress (last out-sequence))))
-    )
-  )
-  )
+  
+  (defn compress [v] 
+    (loop [v v s [] repetitions 1]
+      (if (empty? v)
+        s
+        (recur (rest v) (if (not= (first v) (second v)) (conj (conj s repetitions) (first v)) s)(if (not= (first v) (second v)) 1 (inc repetitions))))))
+      (rest (iterate compress secuencia))
+
+)
+
 
 
