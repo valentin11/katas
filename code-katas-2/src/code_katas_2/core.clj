@@ -17,17 +17,10 @@
   "Dado un numero cualquiera de secuencias, cada una ya ordenada de menor a mayor, encontrar el numero
    mas chico que aparezca en todas las secuencias, las secuencias pueden ser infinitas."
   [& seqs]
-(def function (fn [v e] (not-every? false?(map #(= % e) v))));Devuelve true si el vector "v" contiene el elemento "e", sino devuelve false. 
-(defn intersection [e];Devuelve true si el elemento pertenece a todos los vectores los cuales estan adentro de seqs.
-   (loop [number e vect seqs l []]
-       (if (empty? vect)
-         (not-any? false? l)
-         (recur number (rest vect) (conj l (function (first vect) number))))))
-  
- (if (= (count seqs) 1)
-     (first (first seqs));Devuelve el primer elemento.
-   (first (filter intersection (first seqs)))
-   )
+  (if (not-any? false? (map (fn [a](= (first (sort (map first seqs))) (first a))) seqs));Si todos los cabezales son iguales.
+    (first (first seqs))
+    (recur (map (fn [v](if (= (first v) (first (sort (map first seqs)))) (rest v) v)) seqs));Llamo recursivamente quitando el menor elemento de la correspondiente lista.
+  )
 )
 
 
@@ -36,20 +29,15 @@
    retorne una nueva coleccion donde el valor es insertado intercalado cada dos argumentos
    que cumplan el predicado"
   [predicado valor secuencia]
-(if (empty? secuencia) 
-  secuencia
-  (loop [p predicado v valor s secuencia l []]
-    (if  (= (count s) 1);Caso base.
-       (conj l (first s))
-       (recur p v (rest s) (if (p (first s) (second s));Si se cumple el predicado
-                       (conj (conj l (first s)) valor)
-                       (conj l (first s)))
-                      )
-     )
-   )
- )
-)
 
+(if (empty? secuencia)
+  secuencia
+  ((defn inter [predicado valor secuencia v]
+     (lazy-seq (if (= (count secuencia) 1)
+                 (conj v (first secuencia))
+                 (inter predicado valor (rest secuencia) (if (predicado (first secuencia) (second secuencia));Si se cumple el predicado
+                                                           (conj (conj v (first secuencia)) valor)
+                                                             (conj v (first secuencia))))))) predicado valor secuencia [])))
 
 (defn tartamudeo
   "Escriba una funcion que retorne una secuencia lazy que comprima el tartamudeo de una secuencia de numeros.
@@ -59,12 +47,12 @@
    cada nuevo elemento es el elemento anterior comprimido."
   [secuencia]
   
-  (defn compress [v] 
+(defn compress [v] 
     (loop [v v s [] repetitions 1]
       (if (empty? v)
         s
         (recur (rest v) (if (not= (first v) (second v)) (conj (conj s repetitions) (first v)) s)(if (not= (first v) (second v)) 1 (inc repetitions))))))
-      (rest (iterate compress secuencia))
+(rest (iterate compress secuencia))
 
 )
 

@@ -25,10 +25,10 @@
   (is (= 2 (k/search [2 9 40 90])))
   (is (= 7 (k/search [1 2 3 4 5 6 7 8 9] [0.5 3/2 7 19])))
   (is (= 42 (k/search (range) (range 0 100 7/6) [10 23 31 42 72 182])))
-  ;(is (= 64 (k/search (map #(* % % %) (range))
-                      ;(filter #(zero? (bit-and % (dec %))) (range))
-                      ;(iterate inc 20))))
-                      )
+  (is (= 64 (k/search (map #(* % % %) (range))
+                      (filter #(zero? (bit-and % (dec %))) (range))
+                     (iterate inc 20))))
+                     )
 
 
 (deftest intercalar
