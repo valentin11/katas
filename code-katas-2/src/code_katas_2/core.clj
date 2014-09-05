@@ -29,17 +29,14 @@
    retorne una nueva coleccion donde el valor es insertado intercalado cada dos argumentos
    que cumplan el predicado"
   [predicado valor secuencia]
-
-(if (empty? secuencia)
-  secuencia
-  ((defn inter [predicado valor secuencia v]
-     (lazy-seq (if (= (count secuencia) 1)
-                 (conj v (first secuencia))
-                 (inter predicado valor (rest secuencia) (if (predicado (first secuencia) (second secuencia));Si se cumple el predicado
-                                                           (conj (conj v (first secuencia)) valor)
-                                                             (conj v (first secuencia))))))) predicado valor secuencia [])))
-
-(defn tartamudeo
+   (lazy-seq 
+     (if (empty? secuencia)
+         secuencia
+         (do
+           (if(and (not= (second secuencia) nil)(predicado (first secuencia) (second secuencia)))
+             (cons (first secuencia) (cons valor (intercalar predicado valor (rest secuencia))))
+             (cons (first secuencia) (intercalar predicado valor (rest secuencia))))))))
+(defn tartamudeo
   "Escriba una funcion que retorne una secuencia lazy que comprima el tartamudeo de una secuencia de numeros.
    Comprimir el tartamudeo se refiere a que [1 1 1] se exprese como [3 1] y a su vez [3 1] se exprese como [1 3 1 1].
 
