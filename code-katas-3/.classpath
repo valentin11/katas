@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/usuario/Desktop/_ UCU _/Segundo Año/Prolog/Practicos/katas/code-katas-3/target/classes"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/usuario/.m2/repository/clojure-complete/clojure-complete/0.2.3/clojure-complete-0.2.3.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/usuario/.m2/repository/org/clojure/tools.nrepl/0.2.3/tools.nrepl-0.2.3.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/usuario/.m2/repository/org/clojure/core.logic/0.8.8/core.logic-0.8.8.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/usuario/.m2/repository/org/clojure/clojure/1.6.0/clojure-1.6.0.jar"/>
+	<classpathentry kind="src" path="test"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="output" path="target/classes"/>
+</classpath>
